@@ -1,0 +1,82 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.io.*;
+class SwingProject implements ActionListener
+{
+    JLabel jlabTitle,jlabName,jlabPassword,jlabDesig,jlabRemark;
+    JButton jbtnSubmit;
+    JTextField jtfName,jtfPassword,jtfDesig;
+    SwingProject()
+    {
+        JFrame jfrm1= new JFrame("This is Home");
+        jfrm1.setLayout(new FlowLayout());
+        jfrm1.setSize(250,230);
+        jfrm1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jfrm1.setBackground(Color.red);
+        jlabTitle= new JLabel("Register");
+        jlabName= new JLabel("Enter name");
+        jlabPassword= new JLabel("Enter password");
+        jlabDesig= new JLabel("Enter Designation");
+        jlabRemark= new JLabel(" ");
+        jbtnSubmit= new JButton("Submit");
+        jtfName=new JTextField(15);
+        jtfPassword= new JTextField(15);
+        jtfDesig= new JTextField(15);
+        jtfName.setActionCommand("Name");
+        jtfPassword.setActionCommand("Password");
+        jtfDesig.setActionCommand("Time");
+        jbtnSubmit.addActionListener(this);
+        jfrm1.add(jlabName);
+        jfrm1.add(jtfName);
+        jfrm1.add(jlabPassword);
+        jfrm1.add(jtfPassword);
+        jfrm1.add(jlabDesig);
+        jfrm1.add(jtfDesig);
+        jfrm1.add(jlabRemark);
+        jfrm1.add(jbtnSubmit);
+        jfrm1.setVisible(true);
+    }
+    public void actionPerformed(ActionEvent ae)
+    {
+        int i=0,j=0;
+        if(ae.getActionCommand().equals("Submit"))
+        {   
+            String strName=jtfName.getText();
+            String strPassword=jtfPassword.getText();
+            String strDesig=jtfDesig.getText();
+            if(strPassword.equals("employee"))
+            {   
+                try(FileInputStream f1= new FileInputStream(strName);
+                    FileInputStream f2= new FileInputStream(strDesig))
+                {
+                    do
+                    {
+                        i=f1.read();
+                    }while(i!=-1);
+                    do
+                    {
+                        j=f2.read();
+                    }while(j!=-1);
+                }catch(IOException exc)
+                {
+                    jlabRemark.setText("Welcome "+strName+" as "+strDesig);
+                }
+            }
+            else
+            {
+                jlabRemark.setText("Sorry wrong password");
+            }
+        }
+    }
+        public static void main(String args[])
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                new SwingProject();
+            }
+        });
+    }
+}
